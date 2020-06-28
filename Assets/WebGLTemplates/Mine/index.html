@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="http://cnbj1-fds.api.xiaomi.net/bucket-study/FindMi/favicon.ico" type="image/x-icon" />
+    <title>Find Mi</title>
+    <style>
+      #page-container{
+        display: flex;
+        justify-content: center;
+      }
+
+      #unity-canvas{
+        width: 1000px;
+        height: 600px;
+        margin-top: 200px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px #80808066;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div id="page-container">
+      <canvas id="unity-canvas"></canvas>
+    </div>
+    
+  </body>
+  <script>
+    const loaderUrl = "%UNITY_WEBGL_LOADER_URL%"
+    var config = {
+      dataUrl: "%UNITY_DATA_URL",
+      frameworkUrl: "%UNITY_FRAMEWORK_URL",
+      codeUrl: "%UNITY_CODE_URL",
+      streamingAssetsUrl: "StreamingAssets",
+      productName: "FindMi",
+      productVersion: "UNITY_GAME_VERSION"
+    }
+    var canvas = document.querySelector("#unity-canvas");
+    const script = document.createElement("script")
+    script.src = loaderUrl
+    script.onload = () => {
+      createUnityInstance(canvas, config)
+    }
+    document.body.appendChild(script)
+  </script>
+</html>
