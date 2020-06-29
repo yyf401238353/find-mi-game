@@ -37,18 +37,20 @@ public class PostProcessWebGL
         //Fetch filenames to be referenced in index.html
         string
             webglBuildUrl,
-            webglLoaderUrl,
-            dataJsUrl,
-            frameworkUrl,
-            codeUrl;
+            webglLoaderUrl;
 
+        if (File.Exists(Paths.Combine(pathToBuiltProject, "Build", "UnityLoader.js")))
+        {
+            webglLoaderUrl = "Build/UnityLoader.js";
+        }
+        else
+        {
+            webglLoaderUrl = "Build/UnityLoader.min.js";
+        }
 
         string buildName = pathToBuiltProject.Substring(pathToBuiltProject.LastIndexOf("/") + 1);
         webglBuildUrl = string.Format("Build/{0}.json", buildName);
-        webglLoaderUrl = string.Format("Build/{0}.loader.js", buildName);
-        dataJsUrl = string.Format("Build/{0}.data", buildName);
-        frameworkUrl = string.Format("Build/{0}.framework.js", buildName);
-        codeUrl = string.Format("Build/{0}.wasm", buildName);
+
 
         //webglLoaderUrl = EditorUserBuildSettings.development? "Build/UnityLoader.js": "Build/UnityLoader.min.js";
         Dictionary<string, string> replaceKeywordsMap = new Dictionary<string, string> {
@@ -71,22 +73,6 @@ public class PostProcessWebGL
                 {
                     "%UNITY_WEBGL_BUILD_URL%",
                     webglBuildUrl
-                },
-                {
-                    "%UNITY_DATA_URL",
-                    dataJsUrl
-                },
-                {
-                    "%UNITY_FRAMEWORK_URL",
-                    frameworkUrl
-                },
-                {
-                    "%UNITY_CODE_URL",
-                    codeUrl
-                },
-                {
-                    "UNITY_GAME_VERSION",
-                    PlayerSettings.bundleVersion
                 }
             };
 
