@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FllowHero : MonoBehaviour
 {
-    private Transform Target;
+
     [Header("跟随对象名")]
     public string TargetObjectName;
     [Header("最小跟随速度")]
@@ -12,10 +12,14 @@ public class FllowHero : MonoBehaviour
     [Header("跟随系数")]
     public float FollowCoefficient = 0.1f;
 
+    private float DefaultZ;
+    private Transform Target;
+
     // Start is called before the first frame update
     void Start()
     {
         this.Target = GameObject.Find(this.TargetObjectName).transform;
+        this.DefaultZ = this.transform.position.z;
     }
 
     private void FixedUpdate()
@@ -26,6 +30,6 @@ public class FllowHero : MonoBehaviour
         float diff = Vector3.Distance(myPosition, targetPosisiton);
         float speed = diff * this.FollowCoefficient + this.MinFollowSpeed;
 
-        this.transform.position = Vector3.Lerp(myPosition, targetPosisiton, speed);
+        this.transform.position = Vector3.Lerp(myPosition, targetPosisiton, speed) + new Vector3(0, 0, this.DefaultZ);
     }
 }
