@@ -11,19 +11,20 @@ public class HeroBorn : MonoBehaviour
 
     private bool isBorn = false;
 
-    private GameObject nowAniamtionControl;
+    private HeroAnimationControl nowAniamtionControl;
     private GameObject nowBornParticle;
+    private Hero mainController;
 
     // Start is called before the first frame update
     void Start()
     {
         this.nowBornParticle = Instantiate(this.BornParticle, this.transform);
+        this.mainController = this.GetComponent<Hero>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -32,13 +33,14 @@ public class HeroBorn : MonoBehaviour
         if (!this.isBorn)
         {
             this.isBorn = true;
-            this.nowAniamtionControl = Instantiate(this.AnimationControl, this.transform);
+            this.nowAniamtionControl = Instantiate(this.AnimationControl, this.transform).GetComponent<HeroAnimationControl>();
             this.nowAniamtionControl.name = "AnimationControl";
             GameObject boomObject = Instantiate(this.BoomActiveParticle, this.transform);
             Destroy(boomObject, 3);
             Destroy(this.nowBornParticle);
 
             // 通知主控制脚本，已经成功出生
+            this.mainController.heroBorn();
         }
 
     }
