@@ -53,16 +53,18 @@ public class Hero : MonoBehaviour
         this.myRigidbody = this.GetComponent<Rigidbody2D>();
     }
 
-
     void Update()
     {
 
         if (this.NowStatus != Status.NOT_BORN)
         {
             this.keyboardReaction();
+            // 更新速度
             this.myRigidbody.velocity = new Vector2(this.nowHorizontalVelocity, this.myRigidbody.velocity.y);
-        }
 
+
+            this.preventSlopeSlide();
+        }
     }
 
     private void keyboardReaction()
@@ -93,7 +95,7 @@ public class Hero : MonoBehaviour
             this.NowStatus = Status.STATIC;
             this.nowHorizontalVelocity = 0;
         }
-        else
+        else if (this.horizontalPressKey.Count > 0)
         {
             bool isMoveRight = this.horizontalPressKey[this.horizontalPressKey.Count - 1] == KeyCode.D;
 
@@ -107,6 +109,14 @@ public class Hero : MonoBehaviour
         }
     }
 
+    private void preventSlopeSlide()
+    {
+        // 在静止状态下，Y轴速度为0，防止在斜坡上下滑
+        if (this.NowStatus == Status.STATIC)
+        {
+            this.myRigidbody.velocity = new Vector2(this.myRigidbody.velocity.x, 0);
+        }
+    }
 
     /// <summary>
     /// 英雄出生事件
@@ -118,6 +128,7 @@ public class Hero : MonoBehaviour
         // 考虑到默认动画就是STATIC，故而，直接使用
         this.nowStatus = Status.STATIC;
     }
+
 
     private Status NowStatus
     {
