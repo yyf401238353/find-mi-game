@@ -38,14 +38,14 @@ public class Hero : MonoBehaviour
 
 
     [Header("水平移动速度")]
-    public float HorizintalVclocity;
+    public float HorizontalVelocity;
 
     private HeroAnimationControl myAnimationControl;
     private Status nowStatus = Status.NOT_BORN;
-    private float nowHorizintalVclocity = 0;
+    private float nowHorizontalVelocity = 0;
     private Rigidbody2D myRigidbody;
 
-    private List<KeyCode> horizintalPressKey = new List<KeyCode>();
+    private List<KeyCode> horizontalPressKey = new List<KeyCode>();
 
     // Start is called before the first frame update
     void Start()
@@ -60,18 +60,17 @@ public class Hero : MonoBehaviour
         if (this.NowStatus != Status.NOT_BORN)
         {
             this.keyboardReaction();
-            this.myRigidbody.velocity = new Vector2(this.nowHorizintalVclocity, this.myRigidbody.velocity.y);
+            this.myRigidbody.velocity = new Vector2(this.nowHorizontalVelocity, this.myRigidbody.velocity.y);
         }
 
     }
 
     private void keyboardReaction()
     {
-        this.disposeHorizintalKeys();
-
+        this.disposeHorizontalKeys();
     }
 
-    private void disposeHorizintalKeys()
+    private void disposeHorizontalKeys()
     {
         KeyCode[] keycodes = { KeyCode.A, KeyCode.D };
 
@@ -79,30 +78,30 @@ public class Hero : MonoBehaviour
         {
             if (Input.GetKeyDown(code))
             {
-                this.horizintalPressKey.Add(code);
+                this.horizontalPressKey.Add(code);
             }
             if (Input.GetKeyUp(code))
             {
-                this.horizintalPressKey.Remove(code);
+                this.horizontalPressKey.Remove(code);
             }
 
         }
 
         // 如果没有任何水平按键按下时，是正在地面上奔跑，则会将水平速度放置为0
-        if (this.horizintalPressKey.Count == 0 && this.NowStatus == Status.RUNNING)
+        if (this.horizontalPressKey.Count == 0 && this.NowStatus == Status.RUNNING)
         {
             this.NowStatus = Status.STATIC;
-            this.nowHorizintalVclocity = 0;
+            this.nowHorizontalVelocity = 0;
         }
         else
         {
-            bool isMoveRight = this.horizintalPressKey[this.horizintalPressKey.Count - 1] == KeyCode.D;
+            bool isMoveRight = this.horizontalPressKey[this.horizontalPressKey.Count - 1] == KeyCode.D;
 
             if (this.NowStatus == Status.RUNNING || this.NowStatus == Status.STATIC)
             {
                 float rotateY = isMoveRight ? 0 : 180;
                 this.NowStatus = Status.RUNNING;
-                this.nowHorizintalVclocity = isMoveRight ? this.HorizintalVclocity : -this.HorizintalVclocity;
+                this.nowHorizontalVelocity = isMoveRight ? this.HorizontalVelocity : -this.HorizontalVelocity;
                 this.transform.rotation = Quaternion.Euler(new Vector3(0, rotateY, 0));
             }
         }
