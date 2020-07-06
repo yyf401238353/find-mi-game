@@ -39,7 +39,8 @@ public class Hero : MonoBehaviour
 
     [Header("水平移动速度")]
     public float HorizontalVelocity;
-
+    [Header("垂直移动速度")]
+    public float JumpVerticalVelocity;
     private HeroAnimationControl myAnimationControl;
     private Status nowStatus = Status.NOT_BORN;
     private float nowHorizontalVelocity = 0;
@@ -47,8 +48,6 @@ public class Hero : MonoBehaviour
 
     private bool isStandInRoad = false;
     private List<KeyCode> horizontalPressKey = new List<KeyCode>();
-
-    private Vector2 myVelocity = new Vector2(0, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -60,21 +59,66 @@ public class Hero : MonoBehaviour
     {
 
         this.keyboardReaction();
-        this.updateVelocity();
+        this.refreshStatus();
+        this.updateHorizontalVelocity();
     }
 
     private void keyboardReaction()
     {
         this.disposeHorizontalKeys();
+        this.disposeVecticalKeys();
     }
 
-    private void updateVelocity()
+    private void updateHorizontalVelocity()
     {
-        Vector2 velocity = this.myRigidbody.velocity;
+        // 只有允许控制的情况下，x轴速度才会刷新
+        if (this.isAlloweHorizontalControl)
+        {
+            Vector2 velocity = this.myRigidbody.velocity;
 
-        velocity.x = this.nowHorizontalVelocity;
+            velocity.x = this.nowHorizontalVelocity;
 
-        this.myRigidbody.velocity = velocity;
+            this.myRigidbody.velocity = velocity;
+        }
+
+    }
+
+    /// <summary>
+    /// 刷新状态
+    /// </summary>
+    private void refreshStatus()
+    {
+        bool isInJumpUpStatus = this.NowStatus == Status.JUMP_UP || this.NowStatus == Status.DOUBLE_JUMP_UP;
+        if (isInJumpUpStatus && this.myRigidbody.velocity.y < 0)
+        {
+            this.NowStatus = Status.JUMP_DOWN;
+        }
+        else if (this.NowStatus == Status.JUMP_DOWN && this.isStandInRoad)
+        {
+            this.NowStatus = Status.STATIC;
+        }
+    }
+
+    private void disposeVecticalKeys()
+    {
+        List<Status> allowSetYVelocityStatus = new List<Status>(new Status[] { Status.RUNNING, Status.STATIC });
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Vector2 velocity = this.myRigidbody.velocity;
+            // 站在地上，并且属于允许设置Y轴的状态，则给予Y初始速度
+            if (allowSetYVelocityStatus.Contains(this.NowStatus) && this.isStandInRoad)
+            {
+                velocity.y = this.JumpVerticalVelocity;
+                this.NowStatus = Status.JUMP_UP;
+            }
+            else if (this.NowStatus == Status.JUMP_UP)
+            {
+                velocity.y = this.JumpVerticalVelocity;
+                this.NowStatus = Status.DOUBLE_JUMP_UP;
+            }
+            this.myRigidbody.velocity = velocity;
+        }
     }
 
     private void disposeHorizontalKeys()
@@ -95,7 +139,7 @@ public class Hero : MonoBehaviour
         }
 
         // 如果没有任何水平按键按下时，是正在地面上奔跑，则会将水平速度放置为0
-        if (this.horizontalPressKey.Count == 0 && this.NowStatus == Status.RUNNING)
+        if (this.horizontalPressKey.Count == 0 && this.isAlloweHorizontalControl)
         {
             this.NowStatus = Status.STATIC;
             this.nowHorizontalVelocity = 0;
@@ -105,7 +149,7 @@ public class Hero : MonoBehaviour
         {
             bool isMoveRight = this.horizontalPressKey[this.horizontalPressKey.Count - 1] == KeyCode.D;
 
-            if (this.NowStatus == Status.RUNNING || this.NowStatus == Status.STATIC)
+            if (this.isAlloweHorizontalControl)
             {
                 float rotateY = isMoveRight ? 0 : 180;
                 this.NowStatus = Status.RUNNING;
@@ -127,6 +171,16 @@ public class Hero : MonoBehaviour
         this.nowStatus = Status.STATIC;
     }
 
+    /// <summary>
+    /// 是否允许水平轴控制
+    /// </summary>
+    private bool isAlloweHorizontalControl
+    {
+        get
+        {
+            return this.NowStatus == Status.STATIC || this.NowStatus == Status.RUNNING;
+        }
+    }
 
     private Status NowStatus
     {
