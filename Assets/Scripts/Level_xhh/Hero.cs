@@ -45,7 +45,10 @@ public class Hero : MonoBehaviour
     private float nowHorizontalVelocity = 0;
     private Rigidbody2D myRigidbody;
 
+    private bool isStandInRoad = false;
     private List<KeyCode> horizontalPressKey = new List<KeyCode>();
+
+    private Vector2 myVelocity = new Vector2(0, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -56,20 +59,29 @@ public class Hero : MonoBehaviour
     void Update()
     {
 
-        if (this.NowStatus != Status.NOT_BORN)
-        {
-            this.keyboardReaction();
-            // 更新速度
-            this.myRigidbody.velocity = new Vector2(this.nowHorizontalVelocity, this.myRigidbody.velocity.y);
-
-
-            this.preventSlopeSlide();
-        }
+        this.keyboardReaction();
+        this.updateVelocity();
     }
 
     private void keyboardReaction()
     {
         this.disposeHorizontalKeys();
+    }
+
+    private void updateVelocity()
+    {
+        List<Status> resetYVelecityStatus = new List<Status>(new Status[] { Status.RUNNING, Status.STATIC });
+        Vector2 velocity = this.myRigidbody.velocity;
+
+        velocity.x = this.nowHorizontalVelocity;
+
+        // 如果站在地上，并且处于重置速度状态,则Y轴速度为0
+        if (resetYVelecityStatus.Contains(this.NowStatus) && this.isStandInRoad)
+        {
+            velocity.y = 0;
+        }
+
+        this.myRigidbody.velocity = velocity;
     }
 
     private void disposeHorizontalKeys()
@@ -95,7 +107,8 @@ public class Hero : MonoBehaviour
             this.NowStatus = Status.STATIC;
             this.nowHorizontalVelocity = 0;
         }
-        else if (this.horizontalPressKey.Count > 0)
+        // 当有按键按下并且正站在地面上，则，可左右移动
+        else if (this.horizontalPressKey.Count > 0 && this.isStandInRoad)
         {
             bool isMoveRight = this.horizontalPressKey[this.horizontalPressKey.Count - 1] == KeyCode.D;
 
@@ -109,14 +122,6 @@ public class Hero : MonoBehaviour
         }
     }
 
-    private void preventSlopeSlide()
-    {
-        // 在静止状态下，Y轴速度为0，防止在斜坡上下滑
-        if (this.NowStatus == Status.STATIC)
-        {
-            this.myRigidbody.velocity = new Vector2(this.myRigidbody.velocity.x, 0);
-        }
-    }
 
     /// <summary>
     /// 英雄出生事件
@@ -145,6 +150,24 @@ public class Hero : MonoBehaviour
         get
         {
             return this.nowStatus;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 站在了地面
+        if (collision.gameObject.tag == "Road")
+        {
+            this.isStandInRoad = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        // 离开了地面
+        if (collision.gameObject.tag == "Road")
+        {
+            this.isStandInRoad = false;
         }
     }
 }
