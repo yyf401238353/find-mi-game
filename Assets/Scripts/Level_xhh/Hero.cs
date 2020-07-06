@@ -70,16 +70,9 @@ public class Hero : MonoBehaviour
 
     private void updateVelocity()
     {
-        List<Status> resetYVelecityStatus = new List<Status>(new Status[] { Status.RUNNING, Status.STATIC });
         Vector2 velocity = this.myRigidbody.velocity;
 
         velocity.x = this.nowHorizontalVelocity;
-
-        // 如果站在地上，并且处于重置速度状态,则Y轴速度为0
-        if (resetYVelecityStatus.Contains(this.NowStatus) && this.isStandInRoad)
-        {
-            velocity.y = 0;
-        }
 
         this.myRigidbody.velocity = velocity;
     }
