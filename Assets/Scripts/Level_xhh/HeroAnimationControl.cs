@@ -20,8 +20,8 @@ public class HeroAnimationControl : MonoBehaviour
 
     }
 
-    public void setHeroStatusParam(int value)
+    public void setHeroStatusParam(Hero.Status value)
     {
-        this.myAnimator.SetInteger("HeroStatus", value);
+        this.myAnimator.SetInteger("HeroStatus", (int)value);
     }
 }

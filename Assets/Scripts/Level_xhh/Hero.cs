@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D))]
 public class Hero : MonoBehaviour
 {
     public enum Status
@@ -41,7 +42,9 @@ public class Hero : MonoBehaviour
     public float HorizontalVelocity;
     [Header("垂直移动速度")]
     public float JumpVerticalVelocity;
+
     private HeroAnimationControl myAnimationControl;
+    private HeroParticlesControl myParticlesControl;
     private Status nowStatus = Status.NOT_BORN;
     private float nowHorizontalVelocity = 0;
     private Rigidbody2D myRigidbody;
@@ -53,6 +56,7 @@ public class Hero : MonoBehaviour
     void Start()
     {
         this.myRigidbody = this.GetComponent<Rigidbody2D>();
+        this.myParticlesControl = this.GetComponent<HeroParticlesControl>();
     }
 
     void Update()
@@ -189,7 +193,8 @@ public class Hero : MonoBehaviour
             if (this.nowStatus != value)
             {
                 this.nowStatus = value;
-                this.myAnimationControl.setHeroStatusParam((int)value);
+                this.myAnimationControl.setHeroStatusParam(value);
+                this.myParticlesControl.setHeroStatus(value);
             }
 
         }
