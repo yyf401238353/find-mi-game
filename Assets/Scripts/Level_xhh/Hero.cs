@@ -79,12 +79,9 @@ public class Hero : MonoBehaviour
         if (this.isAlloweHorizontalControl)
         {
             Vector2 velocity = this.myRigidbody.velocity;
-
             velocity.x = this.nowHorizontalVelocity;
-
             this.myRigidbody.velocity = velocity;
         }
-
     }
 
     /// <summary>
@@ -120,12 +117,20 @@ public class Hero : MonoBehaviour
             {
                 velocity.y = this.JumpVerticalVelocity;
                 this.NowStatus = Status.DOUBLE_JUMP_UP;
+                // 二段跳的时候可以强制刷新方向
+                this.disposeHorizontalKeys(true);
+                velocity.x = this.nowHorizontalVelocity;
+                this.myRigidbody.velocity = velocity;
             }
             this.myRigidbody.velocity = velocity;
         }
     }
 
-    private void disposeHorizontalKeys()
+    /// <summary>
+    /// 处理水平按键
+    /// </summary>
+    /// <param name="forceToChange">是否强行使左右按键生效，无需考虑是否站在地上,并且也不会改变状态</param>
+    private void disposeHorizontalKeys(bool forceToChange = false)
     {
         KeyCode[] keycodes = { KeyCode.A, KeyCode.D };
 
@@ -160,6 +165,15 @@ public class Hero : MonoBehaviour
                 this.nowHorizontalVelocity = isMoveRight ? this.HorizontalVelocity : -this.HorizontalVelocity;
                 this.transform.rotation = Quaternion.Euler(new Vector3(0, rotateY, 0));
             }
+        }
+
+
+        if (this.horizontalPressKey.Count > 0 && forceToChange)
+        {
+            bool isMoveRight = this.horizontalPressKey[this.horizontalPressKey.Count - 1] == KeyCode.D;
+            float rotateY = isMoveRight ? 0 : 180;
+            this.nowHorizontalVelocity = isMoveRight ? this.HorizontalVelocity : -this.HorizontalVelocity;
+            this.transform.rotation = Quaternion.Euler(new Vector3(0, rotateY, 0));
         }
     }
 
