@@ -24,10 +24,6 @@ public class AttackerControl : MonoBehaviour
 
     private GameObject targetObj;
     /// <summary>
-    /// 跟随英雄的定位点
-    /// </summary>
-    private GameObject heroFollowPoint;
-    /// <summary>
     /// 攻击者类型
     /// </summary>
     private AttackerInfo.AttacekrType nowAttackerType;
@@ -44,7 +40,6 @@ public class AttackerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 
     private void initAttackers()
@@ -110,7 +105,11 @@ public class AttackerControl : MonoBehaviour
 
     public void initAttacker(GameObject heroFollowPoint)
     {
-        this.heroFollowPoint = heroFollowPoint;
         this.targetObj = heroFollowPoint;
+    }
+
+    public void attack(Vector2 targetPos)
+    {
+        this.getNowAttacker(this.nowAttackerType).attack(targetPos);
     }
 }
