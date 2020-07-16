@@ -74,7 +74,7 @@ public class AttackerBase : MonoBehaviour
         {
             this.afterAttackPassTime = 0;
             AttackerEntity entity = Instantiate<AttackerEntity>(this.EntityPrefab, this.attackerEntityControl.transform);
-            entity.entityInit(this.transform.position, targetPosition);
+            entity.entityInit(this.myHeroAttackerFollower, targetPosition);
         }
     }
 }

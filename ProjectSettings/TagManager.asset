@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Road
   - HeroAttack
+  - Enemy
   layers:
   - Default
   - TransparentFX

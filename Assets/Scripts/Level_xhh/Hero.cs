@@ -43,6 +43,8 @@ public class Hero : MonoBehaviour
     [Header("垂直移动速度")]
     public float JumpVerticalVelocity;
 
+    private HeroAttackerControl heroAttackerControl;
+
     private HeroAnimationControl myAnimationControl;
     private HeroParticlesControl myParticlesControl;
     private Status nowStatus = Status.NOT_BORN;
@@ -57,6 +59,7 @@ public class Hero : MonoBehaviour
     {
         this.myRigidbody = this.GetComponent<Rigidbody2D>();
         this.myParticlesControl = this.GetComponent<HeroParticlesControl>();
+        this.heroAttackerControl = this.GetComponent<HeroAttackerControl>();
     }
 
     void Update()
@@ -187,6 +190,8 @@ public class Hero : MonoBehaviour
         // 此处不可使用 NowStatus，因为此时 myAnimationControl 没有加载完成
         // 考虑到默认动画就是STATIC，故而，直接使用
         this.nowStatus = Status.STATIC;
+        // 开启攻击反应
+        this.heroAttackerControl.AttackActive = true;
     }
 
     /// <summary>
