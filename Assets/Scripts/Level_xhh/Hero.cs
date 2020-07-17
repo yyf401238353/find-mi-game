@@ -42,9 +42,14 @@ public class Hero : MonoBehaviour
     public float HorizontalVelocity;
     [Header("垂直移动速度")]
     public float JumpVerticalVelocity;
+    [Header("受伤力度")]
+    public float InjuredStrength;
+
+    private HeroAttackerControl heroAttackerControl;
 
     private HeroAnimationControl myAnimationControl;
     private HeroParticlesControl myParticlesControl;
+    private HeroAudioControl myAudioControl;
     private Status nowStatus = Status.NOT_BORN;
     private float nowHorizontalVelocity = 0;
     private Rigidbody2D myRigidbody;
@@ -57,6 +62,8 @@ public class Hero : MonoBehaviour
     {
         this.myRigidbody = this.GetComponent<Rigidbody2D>();
         this.myParticlesControl = this.GetComponent<HeroParticlesControl>();
+        this.heroAttackerControl = this.GetComponent<HeroAttackerControl>();
+        this.myAudioControl = this.GetComponent<HeroAudioControl>();
     }
 
     void Update()
@@ -98,6 +105,14 @@ public class Hero : MonoBehaviour
         {
             this.NowStatus = Status.STATIC;
         }
+        else if (this.NowStatus == Status.INJURED && this.isStandInRoad)
+        {
+            if (System.Math.Abs(this.myRigidbody.velocity.y) < 0.0001f)
+            {
+                this.NowStatus = Status.STATIC;
+            }
+        }
+
     }
 
     private void disposeVecticalKeys()
@@ -187,6 +202,17 @@ public class Hero : MonoBehaviour
         // 此处不可使用 NowStatus，因为此时 myAnimationControl 没有加载完成
         // 考虑到默认动画就是STATIC，故而，直接使用
         this.nowStatus = Status.STATIC;
+        // 开启攻击反应
+        this.heroAttackerControl.AttackActive = true;
+    }
+
+    public void heroBeAttacked(Vector3 attackPoint)
+    {
+        bool isToLeft = (this.transform.position - attackPoint).x < 0;
+        Debug.Log(isToLeft);
+        Vector2 direction = new Vector2(this.InjuredStrength * (isToLeft ? -1 : 1), this.InjuredStrength * 0.9f);
+        this.myRigidbody.velocity = direction;
+        this.NowStatus = Status.INJURED;
     }
 
     /// <summary>
@@ -209,6 +235,7 @@ public class Hero : MonoBehaviour
                 this.nowStatus = value;
                 this.myAnimationControl.setHeroStatusParam(value);
                 this.myParticlesControl.setHeroStatus(value);
+                this.myAudioControl.setStatus(value);
             }
 
         }

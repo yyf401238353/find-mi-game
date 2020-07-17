@@ -11,6 +11,8 @@ public class HeroAttackerControl : MonoBehaviour
 
     private AttackerControl nowAttacker;
 
+    private bool isAttackActive = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +23,10 @@ public class HeroAttackerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.disposeLeftMouseClick();
+        if (this.isAttackActive)
+        {
+            this.disposeLeftMouseClick();
+        }
     }
 
     private void disposeLeftMouseClick()
@@ -32,6 +37,14 @@ public class HeroAttackerControl : MonoBehaviour
             Vector3 screenPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, camera.z);
             Vector3 realWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
             this.nowAttacker.attack(realWorldPos);
+        }
+    }
+
+    public bool AttackActive
+    {
+        set
+        {
+            this.isAttackActive = value;
         }
     }
 
