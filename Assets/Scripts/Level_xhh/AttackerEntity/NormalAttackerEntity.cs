@@ -90,7 +90,7 @@ public class NormalAttackerEntity : AttackerEntity
         // 撞到了敌人，则对齐造成伤害
         else if (collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<MoveLogicBase>().attackedByHero(this.transform.position);
+            collision.gameObject.GetComponent<MoveAndLogicBase>().attackedByHero(this.transform.position);
             this.overAttack();
         }
 

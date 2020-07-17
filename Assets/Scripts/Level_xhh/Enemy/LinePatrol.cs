@@ -4,9 +4,10 @@ using UnityEngine;
 
 /// <summary>
 /// 注意，使用的时候需要怪物默认朝向左边，并且此时的旋转角为0
+/// 线性巡逻敌人
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
-public class LinePatrol : MoveLogicBase
+public class LinePatrol : MoveAndLogicBase
 {
 
     [Header("巡逻移动速度")]
@@ -27,12 +28,15 @@ public class LinePatrol : MoveLogicBase
     private SpriteRenderer myRender;
     private bool isGetInjured = false;
     private Vector3 injuredPoint;
+    private AudioSource myAudioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         this.myRigibody = this.GetComponent<Rigidbody2D>();
         this.myRender = this.GetComponent<SpriteRenderer>();
+        this.myAudioSource = this.GetComponent<AudioSource>();
+
         this.isMoveLeft = true;
     }
 
@@ -80,6 +84,10 @@ public class LinePatrol : MoveLogicBase
     public override void attackedByHero(Vector3 attackPoint)
     {
         this.injuredPoint = attackPoint;
+        this.myAudioSource.clip = this.InjuredAudioInfo.clip;
+        this.myAudioSource.volume = this.InjuredAudioInfo.volume;
+        this.myAudioSource.Play();
+
         StopCoroutine("getInjured");
         StartCoroutine("getInjured");
     }
