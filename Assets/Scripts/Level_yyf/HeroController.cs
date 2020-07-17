@@ -64,12 +64,12 @@ public class HeroController : MonoBehaviour
         rigidbody2d.velocity = speedNow;
         //Input.GetKeyDown(KeyCode.W);
     }
-    //public void StopYSpeed ()
-    //{
-    //    Vector2 speedNow = rigidbody2d.velocity;
-    //    speedNow.y = 0;
-    //    rigidbody2d.velocity = speedNow;
-    //}
+    public void StopYSpeed ()
+    {
+        Vector2 speedNow = rigidbody2d.velocity;
+        speedNow.y = 0;
+        rigidbody2d.velocity = speedNow;
+    }
     public void ChangeEnergy(int amount)
     {
         currentEnergy = Mathf.Clamp(currentEnergy + amount, 0, maxEnergy);

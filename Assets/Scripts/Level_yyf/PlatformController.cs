@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PlatformController : MonoBehaviour
 {
-    //void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    HeroController controller = other.GetComponent<HeroController>();
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        HeroController controller = collision.gameObject.GetComponent<HeroController>();
 
-    //    controller.StopYSpeed();
-    //}
+        controller.StopYSpeed();
+    }
     // Start is called before the first frame update
     void Start()
     {
