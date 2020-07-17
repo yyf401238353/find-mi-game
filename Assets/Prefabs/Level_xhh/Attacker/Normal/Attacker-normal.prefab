@@ -45,6 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FollowerPrefab: {fileID: 3002753668528323764, guid: c1348bb1c4ff747a2b5294bb1b800902,
     type: 3}
-  EntityPrefab: {fileID: 3730262875014338293, guid: 17eb0cac9b88546239ceb235ed72bff3,
+  EntityPrefab: {fileID: 4248857298444276613, guid: 17eb0cac9b88546239ceb235ed72bff3,
     type: 3}
   AttackT: 1

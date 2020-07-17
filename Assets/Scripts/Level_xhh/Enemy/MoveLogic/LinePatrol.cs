@@ -19,6 +19,8 @@ public class LinePatrol : MoveLogicBase
     public Color InjuredColor;
     [Header("受伤的力度")]
     public float InjuredStrength;
+    [Header("受伤的时间")]
+    public float InjuredTime;
 
     private bool isMoveLeft;
     private Rigidbody2D myRigibody;
@@ -89,10 +91,18 @@ public class LinePatrol : MoveLogicBase
         this.isGetInjured = true;
         this.myRigibody.velocity = new Vector2(direction.x > 0 ? 1 : -1, 0) * this.InjuredStrength;
         this.myRender.color = this.InjuredColor;
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(this.InjuredTime);
 
         this.myRender.color = Color.white;
         this.isGetInjured = false;
     }
 
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Hero")
+        {
+            collision.gameObject.GetComponent<Hero>().heroBeAttacked(this.transform.position);
+        }
+    }
 }

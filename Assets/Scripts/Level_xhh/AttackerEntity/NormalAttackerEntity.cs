@@ -9,11 +9,13 @@ public class NormalAttackerEntity : AttackerEntity
     public float MoveSpeed;
     [Header("攻击范围")]
     public float AttackRange;
-    [Header("受伤颜色")]
-    public Color InjuredColor;
+    [Header("发射攻击音效")]
+    public AudioInfo StartAttackAudioInfo;
+
     private GameObject followHeroPoint;
     private Vector2 targetPos;
     private Rigidbody2D myRigidbody2D;
+    private AudioSource myAudioSource;
     private Vector2 moveDirection;
     private bool isInit = false;
 
@@ -21,6 +23,11 @@ public class NormalAttackerEntity : AttackerEntity
     void Start()
     {
         this.myRigidbody2D = this.GetComponent<Rigidbody2D>();
+        this.myAudioSource = this.GetComponent<AudioSource>();
+
+        this.myAudioSource.clip = this.StartAttackAudioInfo.clip;
+        this.myAudioSource.volume = this.StartAttackAudioInfo.volume;
+        this.myAudioSource.Play();
     }
 
     // Update is called once per frame
