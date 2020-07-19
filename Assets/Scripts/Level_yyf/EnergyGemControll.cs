@@ -10,7 +10,7 @@ public class EnergyGemControll : MonoBehaviour
 
         if (controller != null)
         {
-            controller.ChangeEnergy(1);
+            controller.ChangeEnergy(20);
             Destroy(gameObject);
         }
     }
