@@ -472,7 +472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CrashDamage: 0
   InjuredAudioInfo:
-    clip: {fileID: 8300000, guid: be36dbf3b492e47ffa62a1dea2e27840, type: 3}
+    clip: {fileID: 8300000, guid: 889f82cc74763460cbe77d5400ae5efe, type: 3}
     volume: 0.8
   NormalAudioChangeT: 10
   MoveSpeed: 1
