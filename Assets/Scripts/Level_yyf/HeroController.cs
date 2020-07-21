@@ -15,6 +15,7 @@ public class HeroController : MonoBehaviour
     EnergyTextController EnergyText;
     private float waitTime = 0.5f;
     private float timer = 0.0f;
+    public GameObject projectilePrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +36,11 @@ public class HeroController : MonoBehaviour
             isFall = true;
             isJump = false;
         }
-
-        if (Input.GetKey(KeyCode.Space) && !isFall && !isJump)
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Launch();
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && !isFall && !isJump)
         {
             speedNow.y = jumpSpeed;
             isJump = true;
@@ -54,11 +58,17 @@ public class HeroController : MonoBehaviour
             ChangeEnergy(-1);
         }
         //Input.GetKeyDown(KeyCode.W);
+        if (Input.GetKey(KeyCode.R) && Time.timeScale == 0)
+        {
+            ResetScene();
+        } else if (Input.GetKey(KeyCode.Escape) && Time.timeScale == 0)
+        {
+            ReturnHomePage();
+        }
     }
     public void StopYSpeed ()
     {
         Vector2 speedNow = rigidbody2d.velocity;
-        //speedNow.y = 0;
         isFall = false;
         isJump = false;
         animator.SetBool("IsJump", isJump);
@@ -72,9 +82,24 @@ public class HeroController : MonoBehaviour
         EnergyText.UpdatePercentage(currentEnergy);
     }
 
+    void Launch()
+    {
+        GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.right * 0.5f, Quaternion.identity);
+
+        HeroBulletController projectile = projectileObject.GetComponent<HeroBulletController>();
+        projectile.Launch();
+    }
+
     public void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        ResumeGame();
+    }
+
+    public void ReturnHomePage()
+    {
+        SceneManager.LoadScene("StartScene");
+        ResumeGame();
     }
 
     public void PauseGame()

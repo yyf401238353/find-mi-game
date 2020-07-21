@@ -6,9 +6,16 @@ public class PlatformController : MonoBehaviour
 {
     void OnCollisionEnter2D(Collision2D collision)
     {
-        HeroController controller = collision.gameObject.GetComponent<HeroController>();
-
-        controller.StopYSpeed();
+        HeroController hero = collision.gameObject.GetComponent<HeroController>();
+        HeroBulletController hero_bullet = collision.gameObject.GetComponent<HeroBulletController>();
+        if (hero != null)
+        {
+            hero.StopYSpeed();
+        }
+        if (hero_bullet != null)
+        {
+            StartCoroutine(hero_bullet.DestroyBullet());
+        }
     }
     // Start is called before the first frame update
     void Start()
