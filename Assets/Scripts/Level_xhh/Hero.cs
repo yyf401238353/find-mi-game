@@ -209,7 +209,6 @@ public class Hero : MonoBehaviour
     public void heroBeAttacked(Vector3 attackPoint)
     {
         bool isToLeft = (this.transform.position - attackPoint).x < 0;
-        Debug.Log(isToLeft);
         Vector2 direction = new Vector2(this.InjuredStrength * (isToLeft ? -1 : 1), this.InjuredStrength * 0.9f);
         this.myRigidbody.velocity = direction;
         this.NowStatus = Status.INJURED;
