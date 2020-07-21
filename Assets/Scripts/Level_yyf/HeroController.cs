@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class HeroController : MonoBehaviour
@@ -57,8 +58,7 @@ public class HeroController : MonoBehaviour
     public void StopYSpeed ()
     {
         Vector2 speedNow = rigidbody2d.velocity;
-        Debug.Log("reset");
-        speedNow.y = 0;
+        //speedNow.y = 0;
         isFall = false;
         isJump = false;
         animator.SetBool("IsJump", isJump);
@@ -70,5 +70,20 @@ public class HeroController : MonoBehaviour
         currentEnergy = Mathf.Clamp(currentEnergy + amount, 0, maxEnergy);
         EnergyText = GameObject.Find("/UI/Text").GetComponent<EnergyTextController>();
         EnergyText.UpdatePercentage(currentEnergy);
+    }
+
+    public void ResetScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 }
