@@ -15,6 +15,9 @@ public class HeroController : MonoBehaviour
     bool isFall;
     int currentEnergy = 100;
 
+    float deltaDistance = 0;
+    Vector2 lastPosition;
+
     Rigidbody2D rigidbody2d;
     Animator animator;
     EnergyTextController EnergyText;
@@ -30,9 +33,9 @@ public class HeroController : MonoBehaviour
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        lastPosition = transform.position;
         camera = GameObject.Find("/CM vcam1").GetComponent<CinemachineVirtualCamera>();
         transposer = camera.GetCinemachineComponent<CinemachineTransposer>();
-        Debug.Log(transposer.m_FollowOffset);
         animator.SetBool("IsJump", false);
         animator.SetBool("IsFall", false);
         EndText = GameObject.Find("/UI/EndText");
@@ -48,18 +51,32 @@ public class HeroController : MonoBehaviour
             GameOver();
         }
 
+        deltaDistance = Vector2.Distance(transform.position, lastPosition);
+        lastPosition = transform.position;
+
+        Vector3 cameraOffset = transposer.m_FollowOffset;
+        if (deltaDistance == 0)
+        {
+           cameraOffset.x = Mathf.Clamp(cameraOffset.x + 0.02f, 0, 8f); ;
+           transposer.m_FollowOffset = cameraOffset;
+        } else if (cameraOffset.x > 5.0f && cameraOffset.x < 8.0f)
+        {
+           cameraOffset.x = Mathf.Clamp(cameraOffset.x - 0.02f, 5.0f, 8f);
+           transposer.m_FollowOffset = cameraOffset;
+        }
+
         Vector2 speedNow = rigidbody2d.velocity;
         if (isJump && speedNow.y < 0)
         {
             isFall = true;
             isJump = false;
         }
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.J) && Time.timeScale != 0)
         {
             Launch();
             ChangeEnergy(-3);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && !isFall && !isJump)
+        if (Input.GetKeyDown(KeyCode.Space) && !isFall && !isJump && Time.timeScale != 0)
         {
             speedNow.y = jumpSpeed;
             isJump = true;
