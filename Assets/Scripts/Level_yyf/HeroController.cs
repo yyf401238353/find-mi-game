@@ -2,34 +2,52 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using Cinemachine;
 
 public class HeroController : MonoBehaviour
 {
-    Rigidbody2D rigidbody2d;
-    bool isJump;
-    bool isFall;
     public float jumpSpeed = 8.0f;
-    int currentEnergy = 100;
     public int maxEnergy = 100;
-    Animator animator;
-    EnergyTextController EnergyText;
+
     private float waitTime = 0.5f;
     private float timer = 0.0f;
+    bool isJump;
+    bool isFall;
+    int currentEnergy = 100;
+
+    Rigidbody2D rigidbody2d;
+    Animator animator;
+    EnergyTextController EnergyText;
+
     public GameObject projectilePrefab;
+    GameObject EndText;
+
+    CinemachineVirtualCamera camera;
+    CinemachineTransposer transposer;
 
     // Start is called before the first frame update
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        camera = GameObject.Find("/CM vcam1").GetComponent<CinemachineVirtualCamera>();
+        transposer = camera.GetCinemachineComponent<CinemachineTransposer>();
+        Debug.Log(transposer.m_FollowOffset);
         animator.SetBool("IsJump", false);
         animator.SetBool("IsFall", false);
+        EndText = GameObject.Find("/UI/EndText");
+        EndText.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
         // input controll
+        if (currentEnergy == 0)
+        {
+            GameOver();
+        }
+
         Vector2 speedNow = rigidbody2d.velocity;
         if (isJump && speedNow.y < 0)
         {
@@ -39,6 +57,7 @@ public class HeroController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             Launch();
+            ChangeEnergy(-3);
         }
         if (Input.GetKeyDown(KeyCode.Space) && !isFall && !isJump)
         {
@@ -57,7 +76,6 @@ public class HeroController : MonoBehaviour
             timer = timer - waitTime;
             ChangeEnergy(-1);
         }
-        //Input.GetKeyDown(KeyCode.W);
         if (Input.GetKey(KeyCode.R) && Time.timeScale == 0)
         {
             ResetScene();
@@ -101,7 +119,11 @@ public class HeroController : MonoBehaviour
         SceneManager.LoadScene("StartScene");
         ResumeGame();
     }
-
+    public void GameOver()
+    {
+        PauseGame();
+        EndText.SetActive(true);
+    }
     public void PauseGame()
     {
         Time.timeScale = 0;
