@@ -11,7 +11,8 @@ public class NormalAttackerEntity : AttackerEntity
     public float AttackRange;
     [Header("发射攻击音效")]
     public AudioInfo StartAttackAudioInfo;
-
+    [Header("攻击伤害")]
+    public int Damage;
     private GameObject followHeroPoint;
     private Vector2 targetPos;
     private Rigidbody2D myRigidbody2D;
@@ -90,7 +91,7 @@ public class NormalAttackerEntity : AttackerEntity
         // 撞到了敌人，则对齐造成伤害
         else if (collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<MoveAndLogicBase>().attackedByHero(this.transform.position);
+            collision.gameObject.GetComponent<MoveAndLogicBase>().attackedByHero(this.transform.position, this.Damage);
             this.overAttack();
         }
 

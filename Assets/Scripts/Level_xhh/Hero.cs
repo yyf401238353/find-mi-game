@@ -44,7 +44,8 @@ public class Hero : MonoBehaviour
     public float JumpVerticalVelocity;
     [Header("受伤力度")]
     public float InjuredStrength;
-
+    [Header("出生HP")]
+    public int BornHp;
     private HeroAttackerControl heroAttackerControl;
 
     private HeroAnimationControl myAnimationControl;
@@ -56,10 +57,12 @@ public class Hero : MonoBehaviour
 
     private bool isStandInRoad = false;
     private List<KeyCode> horizontalPressKey = new List<KeyCode>();
+    private int heroHp;
 
     // Start is called before the first frame update
     void Start()
     {
+        this.heroHp = this.BornHp;
         this.myRigidbody = this.GetComponent<Rigidbody2D>();
         this.myParticlesControl = this.GetComponent<HeroParticlesControl>();
         this.heroAttackerControl = this.GetComponent<HeroAttackerControl>();
@@ -206,13 +209,30 @@ public class Hero : MonoBehaviour
         this.heroAttackerControl.AttackActive = true;
     }
 
-    public void heroBeAttacked(Vector3 attackPoint)
+    public void heroBeAttacked(Vector3 attackPoint, int damage)
     {
-        bool isToLeft = (this.transform.position - attackPoint).x < 0;
-        Vector2 direction = new Vector2(this.InjuredStrength * (isToLeft ? -1 : 1), this.InjuredStrength * 0.9f);
-        this.myRigidbody.velocity = direction;
-        this.NowStatus = Status.INJURED;
+        this.heroHp -= damage;
+
+        if (this.heroHp < 0)
+        {
+            this.heroHp = 0;
+        }
+
+        if (this.heroHp > 0)
+        {
+            bool isToLeft = (this.transform.position - attackPoint).x < 0;
+            Vector2 direction = new Vector2(this.InjuredStrength * (isToLeft ? -1 : 1), this.InjuredStrength * 0.9f);
+            this.myRigidbody.velocity = direction;
+            this.NowStatus = Status.INJURED;
+        }
+        else
+        {
+            // todo: 英雄已经GG，切换到GG的状态
+        }
+
     }
+
+    public int getHeroHp() { return this.heroHp; }
 
     /// <summary>
     /// 是否允许水平轴控制

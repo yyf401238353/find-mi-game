@@ -58,7 +58,7 @@ public class EnemyLineShootAttack : EnemyAttackBase
         else if (collision.gameObject.tag == "Hero")
         {
             Hero hero = collision.GetComponent<Hero>();
-            hero.heroBeAttacked(this.transform.position);
+            hero.heroBeAttacked(this.transform.position, this.Damage);
             Destroy(this.transform.gameObject);
         }
 

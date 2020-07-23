@@ -106,7 +106,7 @@ public class LinePatrol : MoveAndLogicBase
 
     }
 
-    public override void attackedByHero(Vector3 attackPoint)
+    public override void attackedByHero(Vector3 attackPoint, int damage)
     {
         this.injuredPoint = attackPoint;
         // 存在受伤音频，则播放
@@ -118,11 +118,13 @@ public class LinePatrol : MoveAndLogicBase
 
         }
 
-        StopCoroutine("getInjured");
-        StartCoroutine("getInjured");
+        StopCoroutine("getInjuredEffect");
+        StartCoroutine("getInjuredEffect");
+
+        this.getInjured(damage);
     }
 
-    private IEnumerator getInjured()
+    private IEnumerator getInjuredEffect()
     {
         Vector2 direction = (this.transform.position - this.injuredPoint).normalized;
 
@@ -140,7 +142,7 @@ public class LinePatrol : MoveAndLogicBase
     {
         if (collision.gameObject.tag == "Hero")
         {
-            collision.gameObject.GetComponent<Hero>().heroBeAttacked(this.transform.position);
+            collision.gameObject.GetComponent<Hero>().heroBeAttacked(this.transform.position, this.CrashDamage);
         }
     }
 }
