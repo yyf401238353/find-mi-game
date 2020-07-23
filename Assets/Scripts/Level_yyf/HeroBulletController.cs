@@ -8,6 +8,9 @@ public class HeroBulletController : MonoBehaviour
     Animator animator;
     Collider2D m_Collider;
 
+    float liftTime = 1.25f;
+    float timer = 0;
+
     void Awake()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
@@ -25,9 +28,10 @@ public class HeroBulletController : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.magnitude > 1000.0f)
+        timer += Time.deltaTime;
+        if (timer > liftTime)
         {
-            Destroy(gameObject);
+            StartCoroutine(DestroyBullet());
         }
     }
 

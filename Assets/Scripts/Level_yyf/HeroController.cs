@@ -11,6 +11,11 @@ public class HeroController : MonoBehaviour
 
     private float waitTime = 0.5f;
     private float timer = 0.0f;
+
+    private float hurtTimer = 0.0f;
+    public float untouchTime = 1.0f;
+
+    bool isUntouch = false;
     bool isJump;
     bool isFall;
     int currentEnergy = 100;
@@ -93,6 +98,17 @@ public class HeroController : MonoBehaviour
             timer = timer - waitTime;
             ChangeEnergy(-1);
         }
+
+        if(isUntouch)
+        {
+            hurtTimer += Time.deltaTime;
+            if(hurtTimer >= untouchTime)
+            {
+                hurtTimer = 0;
+                isUntouch = false;
+            }
+        }
+
         if (Input.GetKey(KeyCode.R) && Time.timeScale == 0)
         {
             ResetScene();
@@ -101,6 +117,7 @@ public class HeroController : MonoBehaviour
             ReturnHomePage();
         }
     }
+
     public void StopYSpeed ()
     {
         Vector2 speedNow = rigidbody2d.velocity;
@@ -112,9 +129,17 @@ public class HeroController : MonoBehaviour
     }
     public void ChangeEnergy(int amount)
     {
-        currentEnergy = Mathf.Clamp(currentEnergy + amount, 0, maxEnergy);
+        if (!(amount < 0 && isUntouch))
+        {
+          currentEnergy = Mathf.Clamp(currentEnergy + amount, 0, maxEnergy);
+        } 
         EnergyText = GameObject.Find("/UI/Text").GetComponent<EnergyTextController>();
         EnergyText.UpdatePercentage(currentEnergy);
+    }
+
+    public void BeUntouch()
+    {
+        isUntouch = true;
     }
 
     void Launch()

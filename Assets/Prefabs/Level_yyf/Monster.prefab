@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5172024613920091676}
   - component: {fileID: 5172024613920091664}
   - component: {fileID: 5172024613920091665}
+  - component: {fileID: 920171501}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -123,7 +124,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 5
 --- !u!114 &5172024613920091665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,3 +139,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1.5
   direction: 0
+  maxHealth: 2
+  projectilePrefab: {fileID: 2977991220065561788, guid: ec9c3d35509a147569379ca9e4e9ddc9,
+    type: 3}
+  gemPrefab: {fileID: 1886583021607108036, guid: 03db6f36f681b44568505c1e379aa135,
+    type: 3}
+--- !u!61 &920171501
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5172024613920091677}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.28, y: 1.28}
+  m_EdgeRadius: 0
