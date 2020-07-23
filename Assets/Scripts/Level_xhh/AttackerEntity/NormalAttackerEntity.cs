@@ -91,7 +91,16 @@ public class NormalAttackerEntity : AttackerEntity
         // 撞到了敌人，则对齐造成伤害
         else if (collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<MoveAndLogicBase>().attackedByHero(this.transform.position, this.Damage);
+            MoveAndLogicBase enemyObj = collision.gameObject.GetComponent<MoveAndLogicBase>();
+
+            // 检测是否获取到了敌人移动逻辑基础
+            // 存在部分静态且无法摧毁的敌人
+            if (enemyObj)
+            {
+                enemyObj.attackedByHero(this.transform.position, this.Damage);
+            }
+
+
             this.overAttack();
         }
 

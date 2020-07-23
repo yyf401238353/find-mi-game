@@ -234,6 +234,11 @@ public class Hero : MonoBehaviour
 
     public int getHeroHp() { return this.heroHp; }
 
+    public void addHpToHero(int hp)
+    {
+        this.heroHp += hp;
+    }
+
     /// <summary>
     /// 是否允许水平轴控制
     /// </summary>
