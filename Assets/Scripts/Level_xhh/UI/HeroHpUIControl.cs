@@ -44,8 +44,6 @@ public class HeroHpUIControl : MonoBehaviour
                     float xPos = (index - 0.5f) * this.HpPointSize;
                     GameObject hpPoint = Instantiate(this.OneHpPoint, this.transform);
                     hpPoint.transform.localPosition = new Vector3(xPos, 0, 0);
-                    //hpPoint.GetComponent<RectTransform>().localPosition = new Vector3(xPos, 0, 0);
-                    Debug.Log(new Vector3(xPos, 0, 0));
                     this.hpPointArray.Add(hpPoint);
                 }
             }
