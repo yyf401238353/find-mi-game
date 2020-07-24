@@ -33,11 +33,18 @@ public class HeroController : MonoBehaviour
     CinemachineVirtualCamera camera;
     CinemachineTransposer transposer;
 
+    public AudioClip hurtSE;
+    public AudioClip shotSE;
+    public AudioClip deadSE;
+    AudioSource audioSource;
+    AudioSource BGM;
+
     // Start is called before the first frame update
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         lastPosition = transform.position;
         camera = GameObject.Find("/CM vcam1").GetComponent<CinemachineVirtualCamera>();
         transposer = camera.GetCinemachineComponent<CinemachineTransposer>();
@@ -45,6 +52,7 @@ public class HeroController : MonoBehaviour
         animator.SetBool("IsFall", false);
         EndText = GameObject.Find("/UI/EndText");
         EndText.SetActive(false);
+        BGM = GameObject.Find("BGM").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -132,7 +140,10 @@ public class HeroController : MonoBehaviour
         if (!(amount < 0 && isUntouch))
         {
           currentEnergy = Mathf.Clamp(currentEnergy + amount, 0, maxEnergy);
-        } 
+        }
+        if(amount<-3) {
+            audioSource.PlayOneShot(hurtSE);
+        }
         EnergyText = GameObject.Find("/UI/Text").GetComponent<EnergyTextController>();
         EnergyText.UpdatePercentage(currentEnergy);
     }
@@ -147,6 +158,7 @@ public class HeroController : MonoBehaviour
         GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.right * 0.5f, Quaternion.identity);
 
         HeroBulletController projectile = projectileObject.GetComponent<HeroBulletController>();
+        audioSource.PlayOneShot(shotSE);
         projectile.Launch();
     }
 
@@ -164,6 +176,10 @@ public class HeroController : MonoBehaviour
     public void GameOver()
     {
         PauseGame();
+        BGM.Stop();
+        animator.SetBool("IsDead", true);
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        audioSource.PlayOneShot(deadSE);
         EndText.SetActive(true);
     }
     public void PauseGame()
