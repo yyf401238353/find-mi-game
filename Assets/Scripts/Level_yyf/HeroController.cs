@@ -26,6 +26,7 @@ public class HeroController : MonoBehaviour
     Rigidbody2D rigidbody2d;
     Animator animator;
     EnergyTextController EnergyText;
+    ParticleSystem shield;
 
     public GameObject projectilePrefab;
     GameObject EndText;
@@ -47,11 +48,11 @@ public class HeroController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         lastPosition = transform.position;
         camera = GameObject.Find("/CM vcam1").GetComponent<CinemachineVirtualCamera>();
+        shield = GameObject.Find("Shield").GetComponent<ParticleSystem>();
         transposer = camera.GetCinemachineComponent<CinemachineTransposer>();
         animator.SetBool("IsJump", false);
         animator.SetBool("IsFall", false);
         EndText = GameObject.Find("/UI/EndText");
-        EndText.SetActive(false);
         BGM = GameObject.Find("BGM").GetComponent<AudioSource>();
     }
 
@@ -114,6 +115,7 @@ public class HeroController : MonoBehaviour
             {
                 hurtTimer = 0;
                 isUntouch = false;
+                shield.Clear();
             }
         }
 
@@ -139,10 +141,12 @@ public class HeroController : MonoBehaviour
     {
         if (!(amount < 0 && isUntouch))
         {
-          currentEnergy = Mathf.Clamp(currentEnergy + amount, 0, maxEnergy);
+          currentEnergy = Mathf.Clamp(currentEnergy + amount, 0, 10000);
         }
         if(amount<-3) {
             audioSource.PlayOneShot(hurtSE);
+            BeUntouch();
+            shield.Emit(1);
         }
         EnergyText = GameObject.Find("/UI/Text").GetComponent<EnergyTextController>();
         EnergyText.UpdatePercentage(currentEnergy);
@@ -180,7 +184,24 @@ public class HeroController : MonoBehaviour
         animator.SetBool("IsDead", true);
         animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         audioSource.PlayOneShot(deadSE);
-        EndText.SetActive(true);
+        EndTextController textController = EndText.GetComponent<EndTextController>();
+        Debug.Log(textController);
+        if(textController != null)
+        {
+            textController.YouLose();
+        }
+    }
+    public void GameWin()
+    {
+        PauseGame();
+        BGM.Stop();
+        animator.SetBool("IsTeleport", true);
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        EndTextController textController = EndText.GetComponent<EndTextController>();
+        if (textController != null)
+        {
+            textController.YouWin(currentEnergy);
+        }
     }
     public void PauseGame()
     {
