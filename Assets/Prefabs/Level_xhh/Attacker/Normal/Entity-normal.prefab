@@ -5008,3 +5008,4 @@ MonoBehaviour:
   StartAttackAudioInfo:
     clip: {fileID: 8300000, guid: 98655506a4ece404b8dca4926db7a8dc, type: 3}
     volume: 0.6
+  Damage: 1

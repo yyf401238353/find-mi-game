@@ -22,6 +22,8 @@ public class LinePatrol : MoveAndLogicBase
     public float InjuredStrength;
     [Header("受伤的时间")]
     public float InjuredTime;
+    [Header("发起攻击的时间间隔")]
+    public float AttackT;
 
     private bool isMoveLeft;
     private Rigidbody2D myRigibody;
@@ -29,6 +31,7 @@ public class LinePatrol : MoveAndLogicBase
     private bool isGetInjured = false;
     private Vector3 injuredPoint;
     private AudioSource myAudioSource;
+    private float attackClock = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -43,14 +46,36 @@ public class LinePatrol : MoveAndLogicBase
     // Update is called once per frame
     void Update()
     {
-        // 不受伤的时候执行巡逻
+        // 不受伤的时候执行巡逻和攻击操作
         if (!this.isGetInjured)
         {
             this.patrol();
+            this.attack();
         }
 
     }
 
+    private void attack()
+    {
+        this.attackClock += Time.deltaTime;
+
+        if (this.attackClock >= this.AttackT)
+        {
+            // 存在受伤音频，则播放
+            if (this.AttackAudioInfo.clip)
+            {
+                this.myAudioSource.clip = this.AttackAudioInfo.clip;
+                this.myAudioSource.volume = this.AttackAudioInfo.volume;
+                this.myAudioSource.Play();
+
+            }
+
+            this.attackClock = 0;
+            EnemyAttackBase attacker = Instantiate<EnemyAttackBase>(this.AttackerPart, this.transform.parent);
+            attacker.gameObject.transform.position = this.AttackStartPoint.transform.position;
+            attacker.init(attacker.gameObject.transform.position, this.myRigibody.velocity);
+        }
+    }
 
     private void patrol()
     {
@@ -81,18 +106,25 @@ public class LinePatrol : MoveAndLogicBase
 
     }
 
-    public override void attackedByHero(Vector3 attackPoint)
+    public override void attackedByHero(Vector3 attackPoint, int damage)
     {
         this.injuredPoint = attackPoint;
-        this.myAudioSource.clip = this.InjuredAudioInfo.clip;
-        this.myAudioSource.volume = this.InjuredAudioInfo.volume;
-        this.myAudioSource.Play();
+        // 存在受伤音频，则播放
+        if (this.InjuredAudioInfo.clip)
+        {
+            this.myAudioSource.clip = this.InjuredAudioInfo.clip;
+            this.myAudioSource.volume = this.InjuredAudioInfo.volume;
+            this.myAudioSource.Play();
 
-        StopCoroutine("getInjured");
-        StartCoroutine("getInjured");
+        }
+
+        StopCoroutine("getInjuredEffect");
+        StartCoroutine("getInjuredEffect");
+
+        this.getInjured(damage);
     }
 
-    private IEnumerator getInjured()
+    private IEnumerator getInjuredEffect()
     {
         Vector2 direction = (this.transform.position - this.injuredPoint).normalized;
 
@@ -110,7 +142,7 @@ public class LinePatrol : MoveAndLogicBase
     {
         if (collision.gameObject.tag == "Hero")
         {
-            collision.gameObject.GetComponent<Hero>().heroBeAttacked(this.transform.position);
+            collision.gameObject.GetComponent<Hero>().heroBeAttacked(this.transform.position, this.CrashDamage);
         }
     }
 }
