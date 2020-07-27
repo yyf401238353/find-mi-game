@@ -599,7 +599,7 @@ GameObject:
   m_Component:
   - component: {fileID: 279987345}
   - component: {fileID: 279987346}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: AttackerFollowPart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -810,6 +810,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7362100112624936841, guid: 69fe61edefbfc483ebf05cc2e2642e9b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7362100112624936846, guid: 69fe61edefbfc483ebf05cc2e2642e9b,
         type: 3}
@@ -1723,7 +1728,7 @@ GameObject:
   - component: {fileID: 1152748178}
   - component: {fileID: 1152748177}
   - component: {fileID: 1152748179}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Hero
   m_TagString: Hero
   m_Icon: {fileID: 0}
@@ -26698,7 +26703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1914135194}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: BottomPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
