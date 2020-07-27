@@ -164,14 +164,14 @@ public class HeroController : MonoBehaviour
 
     public void ResetScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         ResumeGame();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ReturnHomePage()
     {
-        SceneManager.LoadScene("StartScene");
         ResumeGame();
+        SceneManager.LoadScene("StartScene");
     }
     public void GameOver()
     {
