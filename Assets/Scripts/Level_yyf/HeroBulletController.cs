@@ -8,7 +8,7 @@ public class HeroBulletController : MonoBehaviour
     Animator animator;
     Collider2D m_Collider;
 
-    float liftTime = 1.25f;
+    float liftTime = 1.75f;
     float timer = 0;
 
     void Awake()

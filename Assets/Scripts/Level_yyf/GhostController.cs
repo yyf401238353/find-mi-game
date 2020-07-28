@@ -8,7 +8,7 @@ public class GhostController : MonoBehaviour
     private float switchTime = 2f;
     private float timer = 0.0f;
 
-    private float shotTime = 0.4f;
+    private float shotTime = 0.8f;
     private float shotTimer = 0.0f;
 
     public float speed = 2f;
