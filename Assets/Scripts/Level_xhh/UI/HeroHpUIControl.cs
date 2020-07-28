@@ -15,7 +15,7 @@ public class HeroHpUIControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        this.heroObj = GameObject.FindObjectOfType<Hero>();
     }
 
     // Update is called once per frame
@@ -26,19 +26,17 @@ public class HeroHpUIControl : MonoBehaviour
 
     private void updateHp()
     {
+        // 并没有寻找到英雄，则英雄死亡，销毁HP
         if (!this.heroObj)
         {
-            this.heroObj = GameObject.FindObjectOfType<Hero>();
+            Destroy(this.gameObject);
         }
-
-        if (this.heroObj)
+        else
         {
             int nowHp = this.heroObj.getHeroHp();
             int beforeHp = this.hpPointArray.Count;
             if (nowHp > beforeHp)
             {
-                int diff = nowHp - beforeHp;
-
                 for (int index = beforeHp + 1; index <= nowHp; index++)
                 {
                     float xPos = (index - 0.5f) * this.HpPointSize;
@@ -49,8 +47,6 @@ public class HeroHpUIControl : MonoBehaviour
             }
             else if (beforeHp > nowHp)
             {
-                int diff = beforeHp - nowHp;
-
                 for (int index = beforeHp - 1; index >= nowHp; index--)
                 {
                     GameObject removeObj = this.hpPointArray[index];
