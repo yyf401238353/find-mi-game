@@ -178,19 +178,19 @@ MonoBehaviour:
   AttackAudioInfo:
     clip: {fileID: 8300000, guid: 889f82cc74763460cbe77d5400ae5efe, type: 3}
     volume: 0.15
-  NormalAudioChangeT: 10
+  NormalAudioChangeT: 12
   AttackerPart: {fileID: 559903041628307354, guid: 353bf3e3bead34a83840661db7b23e0b,
     type: 3}
   AttackStartPoint: {fileID: 2537508612668855783}
   DeadObj: {fileID: 8277203105055256046, guid: 0c11f59c2abe942958b30b01820785fe, type: 3}
   MaxHp: 1
-  MoveSpeed: 1
+  MoveSpeed: 1.5
   PatorlXRangeLeft: 5.764
   PatorlXRangeRight: 12.452
   InjuredColor: {r: 1, g: 0, b: 0, a: 1}
   InjuredStrength: 5
   InjuredTime: 0.1
-  AttackT: 5.1
+  AttackT: 8
 --- !u!198 &2537508614457199010
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4932,7 +4932,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

@@ -24,6 +24,8 @@ public class LinePatrol : MoveAndLogicBase
     public float InjuredTime;
     [Header("发起攻击的时间间隔")]
     public float AttackT;
+    [Header("伤害的理由")]
+    public string AttackReason;
 
     private bool isMoveLeft;
     private Rigidbody2D myRigibody;
@@ -137,12 +139,13 @@ public class LinePatrol : MoveAndLogicBase
         this.isGetInjured = false;
     }
 
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Hero")
         {
+            UIControl.setDeadReason(this.AttackReason);
             collision.gameObject.GetComponent<Hero>().heroBeAttacked(this.transform.position, this.CrashDamage);
+
         }
     }
 }

@@ -15,7 +15,6 @@ public class UIControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UIControl.setDeadReason("ow，我的上帝啊，你gg了");
         this.RestartButton.SetActive(false);
         this.BackToMainButton.SetActive(false);
         this.DeadReason.gameObject.SetActive(false);
@@ -38,7 +37,7 @@ public class UIControl : MonoBehaviour
         this.BackToMainButton.SetActive(true);
         this.DeadReason.gameObject.SetActive(true);
 
-        this.DeadReason.text = UIControl.DeadReasonString;
+        this.DeadReason.text = UIControl.DeadReasonString.Length > 0 ? UIControl.DeadReasonString : "ow，我的上帝啊，你gg了";
     }
 
     public void BackToMain()
