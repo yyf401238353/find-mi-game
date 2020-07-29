@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SelectScene : MonoBehaviour
 {
     public GameObject SelectXhhObj;
     public GameObject SelectYyfObj;
+
+    public GameObject SelectXhhDisplay;
+    public GameObject SelectYyfDisplay;
+
+    public InputField NameInputObj;
+    public Text UserNameText;
 
     public enum WhichScene
     {
@@ -19,24 +26,58 @@ public class SelectScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (ScoreControl.UserName.Length == 0)
+        {
+            this.UserNameText.gameObject.SetActive(false);
+            this.setSelectPartActive(false);
+        }
+        else
+        {
+            UserNameText.text = "Welcome : " + ScoreControl.UserName;
+            this.NameInputObj.gameObject.SetActive(false);
+        }
+    }
 
+    private void setSelectPartActive(bool isActive)
+    {
+        this.SelectYyfDisplay.SetActive(isActive);
+        this.SelectXhhDisplay.SetActive(isActive);
+        this.SelectXhhObj.SetActive(isActive);
+        this.SelectYyfObj.SetActive(isActive);
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.updateSelect();
-        this.updateSelectObj();
+
+
+        if (ScoreControl.UserName.Length > 0)
+        {
+            this.updateSelect();
+            this.updateSelectObj();
+        }
+
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (this.nowScene == WhichScene.XHH)
+            if (ScoreControl.UserName.Length == 0 && this.NameInputObj.text.Length != 0)
             {
-                SceneManager.LoadScene("level_xhh");
+                ScoreControl.UserName = this.NameInputObj.text;
+                this.NameInputObj.gameObject.SetActive(false);
+                this.UserNameText.gameObject.SetActive(true);
+                this.setSelectPartActive(true);
+                UserNameText.text = "Welcome : " + ScoreControl.UserName;
             }
             else
             {
-                SceneManager.LoadScene("level_yyf");
+                if (this.nowScene == WhichScene.XHH)
+                {
+                    SceneManager.LoadScene("level_xhh");
+                }
+                else
+                {
+                    SceneManager.LoadScene("level_yyf");
+                }
             }
         }
     }
