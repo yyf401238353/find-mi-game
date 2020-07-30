@@ -37,7 +37,7 @@ public class UIControl : MonoBehaviour
         this.BackToMainButton.SetActive(true);
         this.DeadReason.gameObject.SetActive(true);
 
-        this.DeadReason.text = UIControl.DeadReasonString.Length > 0 ? UIControl.DeadReasonString : "ow，我的上帝啊，你gg了";
+        this.DeadReason.text = UIControl.DeadReasonString.Length > 0 ? UIControl.DeadReasonString : "ow, you dead !!";
     }
 
     public void BackToMain()
