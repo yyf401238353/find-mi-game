@@ -198,10 +198,17 @@ public class HeroController : MonoBehaviour
         animator.SetBool("IsTeleport", true);
         animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         EndTextController textController = EndText.GetComponent<EndTextController>();
+
         if (textController != null)
         {
             textController.YouWin(currentEnergy);
         }
+        // 上传分数
+        ScoreUpload.UnityIns.UploadScore(currentEnergy, ScoreControl.Type.YYF, delegate ()
+        {
+            Debug.Log("upload over");
+
+        });
     }
     public void PauseGame()
     {
