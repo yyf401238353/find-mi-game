@@ -33,8 +33,6 @@ public class ScoreDisplay : MonoBehaviour
 
     private IEnumerator getAllScore()
     {
-        Debug.Log("enter");
-        Debug.Log(ScoreControl.GetAllScoreUrl);
         UnityWebRequest uwr = UnityWebRequest.Get(ScoreControl.GetAllScoreUrl);
         yield return uwr.SendWebRequest();
 

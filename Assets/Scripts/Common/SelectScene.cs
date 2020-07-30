@@ -67,6 +67,13 @@ public class SelectScene : MonoBehaviour
                 this.UserNameText.gameObject.SetActive(true);
                 this.setSelectPartActive(true);
                 UserNameText.text = "Welcome : " + ScoreControl.UserName;
+
+                // 上传分数示例代码
+                ScoreUpload.UnityIns.UploadScore(1, ScoreControl.Type.XHH, delegate ()
+                {
+                    Debug.Log("upload over");
+
+                });
             }
             else
             {

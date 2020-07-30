@@ -30,7 +30,7 @@ public static class ScoreControl
 
     private readonly static string APP_ID = "FindMiGame";
 
-    private readonly static string HOST = "http://10.224.201.40:3100";
+    private readonly static string HOST = "http://teemo.test.mi.com";
 
     private readonly static string UserNameKey = "USER_NAME";
 
@@ -39,6 +39,14 @@ public static class ScoreControl
         get
         {
             return string.Format("{0}/api/score/{1}/all", HOST, APP_ID);
+        }
+    }
+
+    public static string GetUploadScoreUrl
+    {
+        get
+        {
+            return string.Format("{0}/api/score/{1}", HOST, APP_ID);
         }
     }
 
