@@ -46,6 +46,9 @@ public class Hero : MonoBehaviour
     public float InjuredStrength;
     [Header("出生HP")]
     public int BornHp;
+    [Header("死亡特效")]
+    public GameObject DeadObjPrefab;
+
     private HeroAttackerControl heroAttackerControl;
 
     private HeroAnimationControl myAnimationControl;
@@ -227,7 +230,11 @@ public class Hero : MonoBehaviour
         }
         else
         {
-            // todo: 英雄已经GG，切换到GG的状态
+            GameObject dead = Instantiate(this.DeadObjPrefab);
+            dead.transform.position = this.transform.position;
+            // 通知UI，英雄已经死亡
+            GameObject.FindObjectsOfType<UIControl>()[0].HeroDead();
+            Destroy(this.gameObject);
         }
 
     }

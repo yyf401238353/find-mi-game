@@ -24,12 +24,16 @@ public class FllowHero : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 myPosition = this.transform.position;
-        Vector3 targetPosisiton = this.Target.position;
+        if (this.Target)
+        {
+            Vector3 myPosition = this.transform.position;
+            Vector3 targetPosisiton = this.Target.position;
 
-        float diff = Vector3.Distance(myPosition, targetPosisiton);
-        float speed = diff * this.FollowCoefficient + this.MinFollowSpeed;
+            float diff = Vector3.Distance(myPosition, targetPosisiton);
+            float speed = diff * this.FollowCoefficient + this.MinFollowSpeed;
 
-        this.transform.position = Vector3.Lerp(myPosition, targetPosisiton, speed) + new Vector3(0, 0, this.DefaultZ);
+            this.transform.position = Vector3.Lerp(myPosition, targetPosisiton, speed) + new Vector3(0, 0, this.DefaultZ);
+        }
+
     }
 }
