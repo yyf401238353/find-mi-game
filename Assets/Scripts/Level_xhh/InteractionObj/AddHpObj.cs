@@ -8,7 +8,8 @@ public class AddHpObj : MonoBehaviour
     public int AddHpNum;
     [Header("真实的用来展示的加血对象")]
     public GameObject RealAddHpObj;
-
+    [Header("分数")]
+    public int YourScore;
     private AudioSource myAudioSource;
 
     // Start is called before the first frame update
@@ -21,6 +22,7 @@ public class AddHpObj : MonoBehaviour
     {
         if (collision.gameObject.tag == "Hero")
         {
+            UIControl.UnityIns.AddScore(this.YourScore);
             this.myAudioSource.Play();
             collision.gameObject.GetComponent<Hero>().addHpToHero(this.AddHpNum);
             Destroy(this.RealAddHpObj);

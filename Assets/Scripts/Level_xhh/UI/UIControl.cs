@@ -6,29 +6,57 @@ using UnityEngine.SceneManagement;
 
 public class UIControl : MonoBehaviour
 {
-    private static string DeadReasonString;
+    public static UIControl UnityIns;
 
     public Text DeadReason;
+    public Text ScoreText;
     public GameObject RestartButton;
     public GameObject BackToMainButton;
+    public float ScoreUpdateT;
+
+    private int NowScore = 0;
+
+    private int TargetScore = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        UIControl.UnityIns = this;
+
         this.RestartButton.SetActive(false);
         this.BackToMainButton.SetActive(false);
         this.DeadReason.gameObject.SetActive(false);
+
+        InvokeRepeating("UpdateScore", 0, this.ScoreUpdateT);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+
     }
 
-    public static void setDeadReason(string reason)
+    private void UpdateScore()
     {
-        UIControl.DeadReasonString = reason;
+        if (this.NowScore != this.TargetScore)
+        {
+            this.NowScore++;
+            this.ScoreText.text = this.NowScore.ToString();
+        }
+    }
+
+
+    public void AddScore(int num)
+    {
+        this.TargetScore += num;
+        Debug.Log(this.TargetScore);
+    }
+
+
+    public void SetDeadReason(string reason)
+    {
+        this.DeadReason.text = reason.Length > 0 ? reason : "ow, you dead !!";
     }
 
     public void HeroDead()
@@ -36,8 +64,6 @@ public class UIControl : MonoBehaviour
         this.RestartButton.SetActive(true);
         this.BackToMainButton.SetActive(true);
         this.DeadReason.gameObject.SetActive(true);
-
-        this.DeadReason.text = UIControl.DeadReasonString.Length > 0 ? UIControl.DeadReasonString : "ow, you dead !!";
     }
 
     public void BackToMain()

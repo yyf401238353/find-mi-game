@@ -16,9 +16,8 @@ public class StaticEnemy : MonoBehaviour
     {
         if (collision.tag == "Hero")
         {
-            UIControl.setDeadReason(this.AttackReason);
+            UIControl.UnityIns.SetDeadReason(this.AttackReason);
             collision.GetComponent<Hero>().heroBeAttacked(this.transform.position, this.Damage);
-
         }
     }
 }

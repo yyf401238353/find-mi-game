@@ -17,7 +17,7 @@ public class EnemyStaticAttack : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Hero")
         {
-            UIControl.setDeadReason(this.AttackReason);
+            UIControl.UnityIns.SetDeadReason(this.AttackReason);
             Hero hero = collision.GetComponent<Hero>();
             hero.heroBeAttacked(this.transform.position, this.Damage);
             Destroy(this.transform.gameObject);
