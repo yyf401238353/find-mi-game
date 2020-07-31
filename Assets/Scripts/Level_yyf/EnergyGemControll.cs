@@ -17,6 +17,7 @@ public class EnergyGemControll : MonoBehaviour
             controller.ChangeEnergy(20);
             rend.enabled = false;
             Destroy(gameObject , collectSE.length);
+            Destroy(transform.Find("Point Light 2D").gameObject);
         }
     }
     // Start is called before the first frame update
