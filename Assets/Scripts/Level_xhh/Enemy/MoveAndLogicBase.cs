@@ -28,7 +28,8 @@ public abstract class MoveAndLogicBase : MonoBehaviour
     public GameObject DeadObj;
     [Header("最大血量")]
     public int MaxHp;
-
+    [Header("怪物的分数")]
+    public int YourScore;
 
     private int nowHp = -1;
 
@@ -56,6 +57,7 @@ public abstract class MoveAndLogicBase : MonoBehaviour
 
         if (this.nowHp == 0)
         {
+            UIControl.UnityIns.AddScore(this.YourScore);
             this.enemyDead();
         }
     }

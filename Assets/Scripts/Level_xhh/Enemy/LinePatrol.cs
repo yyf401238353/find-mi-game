@@ -143,9 +143,8 @@ public class LinePatrol : MoveAndLogicBase
     {
         if (collision.gameObject.tag == "Hero")
         {
-            UIControl.setDeadReason(this.AttackReason);
+            UIControl.UnityIns.SetDeadReason(this.AttackReason);
             collision.gameObject.GetComponent<Hero>().heroBeAttacked(this.transform.position, this.CrashDamage);
-
         }
     }
 }

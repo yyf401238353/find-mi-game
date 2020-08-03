@@ -233,7 +233,7 @@ public class Hero : MonoBehaviour
             GameObject dead = Instantiate(this.DeadObjPrefab);
             dead.transform.position = this.transform.position;
             // 通知UI，英雄已经死亡
-            GameObject.FindObjectsOfType<UIControl>()[0].HeroDead();
+            UIControl.UnityIns.HeroDead();
             Destroy(this.gameObject);
         }
 
