@@ -17,6 +17,10 @@ public class UIControl : MonoBehaviour
     private int NowScore = 0;
 
     private int TargetScore = 0;
+    /// <summary>
+    /// 记录开始时间
+    /// </summary>
+    private float StartTime = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +30,8 @@ public class UIControl : MonoBehaviour
         this.RestartButton.SetActive(false);
         this.BackToMainButton.SetActive(false);
         this.DeadReason.gameObject.SetActive(false);
+
+        this.StartTime = Time.time;
 
         InvokeRepeating("UpdateScore", 0, this.ScoreUpdateT);
     }

@@ -11,7 +11,7 @@ public abstract class TriggerObj : MonoBehaviour
 public class TriggerPoint : MonoBehaviour
 {
     [Header("触发对象")]
-    public TriggerObj Del;
+    public TriggerObj[] Dels;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +29,10 @@ public class TriggerPoint : MonoBehaviour
     {
         if (collision.tag == "HeroAttack")
         {
-            Del.OnTriggerEvent();
+            foreach (TriggerObj obj in this.Dels)
+            {
+                obj.OnTriggerEvent();
+            }
             Destroy(this.gameObject);
         }
     }

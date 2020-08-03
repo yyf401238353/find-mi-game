@@ -9,19 +9,27 @@ public class TriggerObjMove : TriggerObj
 
     private bool isActive = false;
     private AudioSource myAudioSource;
+    private Vector3 startPos;
+    private float startTime = -1;
 
     // Start is called before the first frame update
     void Start()
     {
         this.myAudioSource = this.GetComponent<AudioSource>();
+        this.startPos = this.transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    void FixedUpdate()
     {
         if (this.isActive)
         {
-            this.transform.position = Vector3.Lerp(this.transform.position, this.TargetPos, this.Speed);
+            if (this.startTime < 0)
+            {
+                this.startTime = Time.time;
+            }
+
+            this.transform.position = Vector3.Lerp(this.startPos, this.TargetPos, (Time.time - this.startTime) * this.Speed);
 
             if ((this.transform.position - this.TargetPos).magnitude < 0.0001f)
             {
